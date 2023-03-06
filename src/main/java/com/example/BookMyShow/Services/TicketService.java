@@ -4,6 +4,8 @@ import com.example.BookMyShow.Entities.*;
 import com.example.BookMyShow.Repositries.*;
 import com.example.BookMyShow.RequestDTO.TicketDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,9 @@ public class TicketService {
     UserRepository userRepository;
     @Autowired
     ShowsSeatRepository showsSeatRepository;
+
+    @Autowired
+    JavaMailSender javaMailSender;
 
     public String bookTicket(TicketDTO ticketDTO)throws Exception{
 
@@ -51,7 +56,24 @@ public class TicketService {
         showsEntity.setListOfTickets(listOfTicket);
         showsRepository.save(showsEntity);
 
+        UserEntity userEntity = userRepository.findById(ticketDTO.getUserID()).get();
+        List<TicketEntity> ticketEntityList = userEntity.getListOfTickets();
+        ticketEntityList.add(ticketEntity);
+        userEntity.setListOfTickets(ticketEntityList);
+        userRepository.save(userEntity);
+
         ticketRepository.save(ticketEntity);
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom("amansagar7366994650@gmail.com");
+        simpleMailMessage.setTo(userEntity.getEmail());
+        simpleMailMessage.setSubject("Tickets from Book My Show of movie "+movieEntity.getName());
+        simpleMailMessage.setText("You have booked ticket of the show "+movieEntity.getName()+"/n"
+                +"And Show timing is "+showsEntity.getShowTiming()+" and date "+showsEntity.getShowDate());
+        javaMailSender.send(simpleMailMessage);
+
+
+
 
         return "Successfully Booked";
 

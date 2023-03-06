@@ -18,7 +18,11 @@ public class TheaterController {
     TheaterServices theaterServices;
     @PostMapping("/addTheater")
     public ResponseEntity<String> addTheater(@RequestBody()TheaterDTO theaterDTO){
+        theaterDTO.setNoOfClassicSeats("13");
+        theaterDTO.setNoOfPremiumSeats("15");
         theaterServices.addTheater(theaterDTO);
+        System.out.println(theaterDTO.getNoOfPremiumSeats());
+
         return new ResponseEntity<>("added Successfully", HttpStatus.CREATED);
     }
 }

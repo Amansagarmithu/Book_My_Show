@@ -1,6 +1,7 @@
 package com.example.BookMyShow.Entities;
 
 import com.example.BookMyShow.Enums.ShowType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ShowsEntity")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,6 +41,7 @@ public class ShowsEntity {
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private MovieEntity movieEntity;
 
     @OneToMany(mappedBy = "showsEntity",cascade = CascadeType.ALL)
@@ -48,5 +49,6 @@ public class ShowsEntity {
 
     @ManyToOne
     @JoinColumn
+    @JsonIgnore
     private TheaterEntity theater;
 }

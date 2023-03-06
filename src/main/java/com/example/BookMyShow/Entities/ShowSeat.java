@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "ShowSeat")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

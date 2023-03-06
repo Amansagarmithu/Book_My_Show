@@ -1,5 +1,6 @@
 package com.example.BookMyShow.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "TheaterEntity")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,10 +24,10 @@ public class TheaterEntity {
 
     @Column(unique = true)
     private String location;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "theater",cascade = CascadeType.ALL)
     List<ShowsEntity> listOfShows = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "theater",cascade = CascadeType.ALL)
     List<TheaterSeat> listOfSeat = new ArrayList<>();
 }
